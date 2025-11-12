@@ -1,7 +1,7 @@
 use std::fmt;
 
 pub struct TokenMatch {
-    token_type: TokenType,
+    token_type: super::tokens::TokenType,
     haystack: String,
     token: String,
     start: usize,
@@ -9,7 +9,7 @@ pub struct TokenMatch {
 }
 
 impl TokenMatch {
-    pub fn new(line: String, token_type: TokenType, token: Option<String>) -> Self {
+    pub fn new(line: String, token_type: super::tokens::TokenType, token: Option<String>) -> Self {
         Self {
             token_type: token_type,
             haystack: line.clone(),
@@ -19,7 +19,7 @@ impl TokenMatch {
         }
     }
 
-    pub fn from_match(line: String, token_type: TokenType, m: regex::Match) -> Self {
+    pub fn from_match(line: String, token_type: super::tokens::TokenType, m: regex::Match) -> Self {
         Self {
             token_type: token_type,
             haystack: line.clone(),
@@ -29,7 +29,7 @@ impl TokenMatch {
         }
     }
 
-    pub fn token_type(&self) -> TokenType {
+    pub fn token_type(&self) -> super::tokens::TokenType {
         self.token_type
     }
 }
@@ -47,26 +47,5 @@ impl fmt::Debug for TokenMatch {
             "TokenMatch {{ haystack: {}, token: {}, start: {}, end: {} }}",
             self.haystack, self.token, self.start, self.end
         )
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Copy)]
-pub enum TokenType {
-    Int,
-    Main,
-    Void,
-    Return,
-    IntConst,
-    OpenBrace,
-    CloseBrace,
-    OpenParen,
-    CloseParen,
-    Semicolon,
-    Unknown,
-}
-
-impl fmt::Display for TokenType {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self)
     }
 }

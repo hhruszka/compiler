@@ -29,7 +29,7 @@ fn main() -> ExitCode {
             Ok(tokens) => {
                 for token in tokens.iter() {
                     // eprintln!("Found tokens: {} type: {}", token, token.token_type());
-                    if token.token_type() == lexer::token::TokenType::Unknown {
+                    if token.token_type() == lexer::tokens::TokenType::Unknown {
                         unknown_tokens = true;
                         break;
                     }
