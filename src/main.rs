@@ -1,6 +1,6 @@
-use crate::lexer::run_lexer;
-use std::process::ExitCode;
+// use crate::lexer::run_lexer;
 use std::fs;
+use std::process::ExitCode;
 
 mod cli;
 mod lexer;
@@ -15,20 +15,20 @@ fn main() -> ExitCode {
         Err(e) => {
             eprintln!("Error reading file: {}", e);
             return ExitCode::FAILURE;
-        },
+        }
         Ok(content) => content,
     };
     if args.get_command() == cli::Command::Lex {
         // println!("Running lexer...");
-        match run_lexer(&data) {
+        match lexer::run_lexer(&data) {
             Err(e) => {
-                // eprintln!("Lexer error: {}", e);
+                eprintln!("Lexer error: {}", e);
                 return ExitCode::FAILURE;
-            },
+            }
             Ok(tokens) => {
-                // for token in tokens.iter() {
-                //     println!("{}", token);
-                // }
+                for token in tokens.iter() {
+                    println!("Found tokens: {} type: {}", token, token.token_type());
+                }
             }
         }
     }

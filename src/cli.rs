@@ -1,5 +1,5 @@
+use clap::{ArgGroup, Parser};
 use std::fmt;
-use clap::{Parser, ArgGroup};
 
 #[derive(PartialEq)]
 pub enum Command {
@@ -8,7 +8,6 @@ pub enum Command {
     Codegen,
     None,
 }
-
 
 impl fmt::Display for Command {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -56,13 +55,13 @@ impl Args {
 
     pub fn get_command(&self) -> Command {
         if self.lex {
-            return Command::Lex
+            return Command::Lex;
         }
         if self.parse {
-            return Command::Parse
+            return Command::Parse;
         }
         if self.codegen {
-            return Command::Codegen
+            return Command::Codegen;
         }
         return Command::None;
     }
