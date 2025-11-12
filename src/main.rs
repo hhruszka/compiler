@@ -18,6 +18,7 @@ fn main() -> ExitCode {
         }
         Ok(content) => content,
     };
+    let mut unknown_tokens = false;
     if args.get_command() == cli::Command::Lex {
         // println!("Running lexer...");
         match lexer::run_lexer(&data) {
@@ -27,11 +28,20 @@ fn main() -> ExitCode {
             }
             Ok(tokens) => {
                 for token in tokens.iter() {
-                    println!("Found tokens: {} type: {}", token, token.token_type());
+                    // eprintln!("Found tokens: {} type: {}", token, token.token_type());
+                    if token.token_type() == lexer::TokenType::Unknown {
+                        unknown_tokens = true;
+                        break;
+                    }
                 }
             }
         }
     }
 
-    ExitCode::SUCCESS
+    if unknown_tokens {
+        eprintln!("Ilegal tokens detected");
+        ExitCode::FAILURE
+    } else {
+        ExitCode::SUCCESS
+    }
 }

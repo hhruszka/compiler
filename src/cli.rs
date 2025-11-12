@@ -14,7 +14,7 @@ impl fmt::Display for Command {
         match self {
             Command::Lex => write!(f, "lex"),
             Command::Parse => write!(f, "parse"),
-            Command::Codegen => write!(f, "codegen"),
+            Command::Codegen => write!(f, "code-gen"),
             Command::None => write!(f, "none"),
         }
     }
@@ -39,7 +39,7 @@ pub struct Args {
     parse: bool,
 
     /// run lexer, parser and then generate assembly only
-    #[arg(long)]
+    #[arg(long = "code-gen")]
     codegen: bool,
 
     /// file name

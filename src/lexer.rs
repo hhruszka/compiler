@@ -4,76 +4,7 @@ use std::fmt;
 use std::ops::RangeBounds;
 use std::sync::LazyLock;
 
-pub struct TokenMatch {
-    token_type: TokenType,
-    haystack: String,
-    token: String,
-    start: usize,
-    end: usize,
-}
-
-impl TokenMatch {
-    pub fn new(line: String, token_type: TokenType, token: Option<String>) -> Self {
-        Self {
-            token_type: token_type,
-            haystack: line.clone(),
-            token: token.unwrap_or_else(|| line.clone()),
-            start: 0,
-            end: line.len(),
-        }
-    }
-
-    pub fn from_match(line: String, token_type: TokenType, m: regex::Match) -> Self {
-        Self {
-            token_type: token_type,
-            haystack: line.clone(),
-            token: m.as_str().to_string(),
-            start: m.start(),
-            end: m.end(),
-        }
-    }
-
-    pub fn token_type(&self) -> TokenType {
-        self.token_type
-    }
-}
-
-impl fmt::Display for TokenMatch {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.token)
-    }
-}
-
-impl fmt::Debug for TokenMatch {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(
-            f,
-            "TokenMatch {{ haystack: {}, token: {}, start: {}, end: {} }}",
-            self.haystack, self.token, self.start, self.end
-        )
-    }
-}
-
-#[derive(Debug, Clone, PartialEq, Eq, Hash, Copy)]
-pub enum TokenType {
-    Int,
-    Main,
-    Void,
-    Return,
-    IntConst,
-    OpenBrace,
-    CloseBrace,
-    OpenParen,
-    CloseParen,
-    Semicolon,
-    Unknown,
-}
-
-impl fmt::Display for TokenType {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{:?}", self)
-    }
-}
+mod token;
 
 pub struct Lexer {
     token_type: TokenType,
@@ -106,7 +37,9 @@ static TOKENS: LazyLock<Vec<Lexer>> = LazyLock::new(|| {
 
 struct Line {
     data: String,
+    #[warn(dead_code)]
     start: usize,
+    #[warn(dead_code)]
     current: usize,
 }
 
@@ -135,6 +68,7 @@ impl Line {
         }
     }
 
+    #[warn(dead_code)]
     fn peek(&self) -> Option<char> {
         if self.current == self.data.len() - 1 {
             None
@@ -143,6 +77,7 @@ impl Line {
         }
     }
 
+    #[warn(dead_code)]
     fn peek_next(&self) -> Option<char> {
         if self.current + 1 >= self.data.len() {
             None
@@ -155,6 +90,7 @@ impl Line {
         self.data = self.data.trim_start().to_string();
     }
 
+    #[warn(dead_code)]
     fn get_token(&mut self) -> String {
         let str = self.data[self.start..self.current].to_string();
         // self.start = self.current;
@@ -162,6 +98,7 @@ impl Line {
         str.clone()
     }
 
+    #[warn(dead_code)]
     fn as_str(&self) -> &str {
         self.data.as_str()
     }
@@ -170,6 +107,7 @@ impl Line {
         self.data.clone()
     }
 
+    #[warn(dead_code)]
     fn slice_to_string(&self, range: impl RangeBounds<usize>) -> String {
         use std::ops::Bound;
 
