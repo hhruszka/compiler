@@ -1,3 +1,4 @@
+use super::lexer::Lexer;
 use std::fmt;
 use std::sync::LazyLock;
 
@@ -23,18 +24,18 @@ impl fmt::Display for TokenType {
     }
 }
 
-pub static TOKENS: LazyLock<Vec<super::Lexer>> = LazyLock::new(|| {
+pub static TOKENS: LazyLock<Vec<Lexer>> = LazyLock::new(|| {
     vec![
-        super::Lexer::new(TokenType::Int, r"int\b"),
-        super::Lexer::new(TokenType::Main, r"main\b"),
-        super::Lexer::new(TokenType::Void, r"void\b"),
-        super::Lexer::new(TokenType::Return, r"return\b"),
-        super::Lexer::new(TokenType::IntConst, r"[0-9]+\b"),
-        super::Lexer::new(TokenType::OpenBrace, r"\{"),
-        super::Lexer::new(TokenType::CloseBrace, r"\}"),
-        super::Lexer::new(TokenType::OpenParen, r"\("),
-        super::Lexer::new(TokenType::CloseParen, r"\)"),
-        super::Lexer::new(TokenType::Semicolon, r";"),
-        super::Lexer::new(TokenType::Comment, r"//[\s\S]*"),
+        Lexer::new(TokenType::Int, r"int\b"),
+        Lexer::new(TokenType::Main, r"main\b"),
+        Lexer::new(TokenType::Void, r"void\b"),
+        Lexer::new(TokenType::Return, r"return\b"),
+        Lexer::new(TokenType::IntConst, r"[0-9]+\b"),
+        Lexer::new(TokenType::OpenBrace, r"\{"),
+        Lexer::new(TokenType::CloseBrace, r"\}"),
+        Lexer::new(TokenType::OpenParen, r"\("),
+        Lexer::new(TokenType::CloseParen, r"\)"),
+        Lexer::new(TokenType::Semicolon, r";"),
+        Lexer::new(TokenType::Comment, r"//[\s\S]*"),
     ]
 });

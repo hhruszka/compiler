@@ -1,21 +1,15 @@
+#![allow(dead_code)]
 use std::fmt;
 use std::ops::RangeBounds;
 
 pub struct Line {
     data: String,
-    #[warn(dead_code)]
-    start: usize,
-    #[warn(dead_code)]
-    current: usize,
+    pos: usize,
 }
 
 impl Line {
     pub fn new(data: String) -> Self {
-        Self {
-            data,
-            start: 0,
-            current: 0,
-        }
+        Self { data, pos: 0 }
     }
 
     pub fn len(&self) -> usize {
@@ -27,28 +21,10 @@ impl Line {
     }
 
     pub fn advance(&mut self, n: usize) {
-        if n >= self.data.len() {
+        if self.pos + n >= self.data.len() {
             self.data = String::new();
         } else {
-            self.data = self.data[n..].to_string();
-        }
-    }
-
-    #[warn(dead_code)]
-    fn peek(&self) -> Option<char> {
-        if self.current == self.data.len() - 1 {
-            None
-        } else {
-            self.data.chars().nth(self.current)
-        }
-    }
-
-    #[warn(dead_code)]
-    fn peek_next(&self) -> Option<char> {
-        if self.current + 1 >= self.data.len() {
-            None
-        } else {
-            self.data.chars().nth(self.current + 1)
+            self.data = self.data[self.pos + n..].to_string();
         }
     }
 
@@ -56,25 +32,14 @@ impl Line {
         self.data = self.data.trim_start().to_string();
     }
 
-    #[warn(dead_code)]
-    fn get_token(&mut self) -> String {
-        let str = self.data[self.start..self.current].to_string();
-        // self.start = self.current;
-        // self.current += 1;
-        str.clone()
+    pub fn remaining(&self) -> String {
+        return self.data[self.pos..].to_string();
     }
 
-    #[warn(dead_code)]
-    fn as_str(&self) -> &str {
-        self.data.as_str()
-    }
-
-    #[warn(dead_code)]
     fn to_string(&self) -> String {
-        self.data.clone()
+        self.data.to_string()
     }
 
-    #[warn(dead_code)]
     fn slice_to_string(&self, range: impl RangeBounds<usize>) -> String {
         use std::ops::Bound;
 

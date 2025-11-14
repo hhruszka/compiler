@@ -1,16 +1,17 @@
-// use crate::lexer::run_lexer;
-use std::fs;
-use std::process::ExitCode;
-
 mod cli;
 mod lexer;
 
+use lexer::tokenizer::tokenize;
+use prettytable::format::{self};
+use prettytable::{Table, row};
+use std::fs;
+use std::process::ExitCode;
+use lexer::tokens::TokenType;
+
 fn main() -> ExitCode {
     let args = cli::Args::new();
-    // println!("File name: {}", args.get_filename());
-    // println!("Command: {}", args.get_command());
-
     let result = fs::read_to_string(args.get_filename());
+
     let data = match result {
         Err(e) => {
             eprintln!("Error reading file: {}", e);
@@ -18,30 +19,35 @@ fn main() -> ExitCode {
         }
         Ok(content) => content,
     };
-    let mut unknown_tokens = false;
+
     if args.get_command() == cli::Command::Lex {
         // println!("Running lexer...");
-        match lexer::run_lexer(&data) {
+        match tokenize(&data) {
             Err(e) => {
                 eprintln!("Lexer error: {}", e);
                 return ExitCode::FAILURE;
             }
             Ok(tokens) => {
+                let mut table = Table::new();
+                let mut exit_code = ExitCode::SUCCESS;
+
+                table.set_format(*format::consts::FORMAT_CLEAN);
+                table.add_row(row!["Token Type", "Value"]);
+
                 for token in tokens.iter() {
-                    // eprintln!("Found tokens: {} type: {}", token, token.token_type());
-                    if token.token_type() == lexer::tokens::TokenType::Unknown {
-                        unknown_tokens = true;
-                        break;
+                    if token.token_type() == TokenType::Unknown {
+                        exit_code = ExitCode::FAILURE;
+                    } else {
+                        table.add_row(row![token.token_type(), token]);
                     }
                 }
+                if exit_code == ExitCode::FAILURE {
+                    eprintln!("Ilegal tokens detected");
+                }
+                table.printstd();
+                return exit_code;
             }
         }
     }
-
-    if unknown_tokens {
-        eprintln!("Ilegal tokens detected");
-        ExitCode::FAILURE
-    } else {
-        ExitCode::SUCCESS
-    }
+    return ExitCode::SUCCESS;
 }
