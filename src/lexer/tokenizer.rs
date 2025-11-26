@@ -5,6 +5,7 @@ use super::tokens;
 // use crate::tokens;
 use std::error::Error;
 
+
 /// Run the lexer on the input string.
 pub fn tokenize(data: &String) -> Result<Vec<token_match::TokenMatch>, Box<dyn Error>> {
     let mut tokens: Vec<token_match::TokenMatch> = Vec::new();
@@ -53,7 +54,7 @@ pub fn tokenize(data: &String) -> Result<Vec<token_match::TokenMatch>, Box<dyn E
                 }
                 None => match next_token_start {
                     Some(pos) => {
-                        // there is a garbage in from of the next token
+                        // there is a garbage in front of the next token
                         tokens.push(token_match::TokenMatch::new(
                             line.to_string().split_at(pos).0.to_string(),
                             tokens::TokenType::Unknown,
