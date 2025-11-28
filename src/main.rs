@@ -19,7 +19,8 @@ fn print(tokens: Vec<TokenMatch>) -> ExitCode {
     table.add_row(row!["Token Type", "Value"]);
 
     for token in tokens.iter() {
-        if token.token_type() == TokenType::Unknown {
+        if token.token_type() == TokenType::Unknown || token.token_type() == TokenType::IllegalToken{
+            // println!("Illegal token: {}",token.to_string());
             exit_code = ExitCode::FAILURE;
         } else {
             table.add_row(row![token.token_type(), token]);

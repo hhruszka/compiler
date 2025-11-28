@@ -15,6 +15,8 @@ pub enum TokenType {
     CloseParen,
     Semicolon,
     Comment,
+    Identifier,
+    IllegalToken,
     Unknown,
 }
 
@@ -36,6 +38,8 @@ pub static TOKENS: LazyLock<Vec<Lexer>> = LazyLock::new(|| {
         Lexer::new(TokenType::OpenParen, r"\("),
         Lexer::new(TokenType::CloseParen, r"\)"),
         Lexer::new(TokenType::Semicolon, r";"),
-        Lexer::new(TokenType::Comment, r"//[\s\S]*"),
+        Lexer::new(TokenType::Identifier, r"[a-zA-Z]\S*?\b"),
+        Lexer::new(TokenType::IllegalToken, r"[0-9]\S*?\b"),
+        Lexer::new(TokenType::Comment, r"//[\s\S]*|/\*[\s\S]*?\*/"),
     ]
 });

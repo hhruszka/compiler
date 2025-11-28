@@ -43,6 +43,9 @@ pub fn tokenize(data: &String) -> Result<Vec<token_match::TokenMatch>, Box<dyn E
 
             match max_match {
                 Some(matched) => {
+                    if token_type == tokens::TokenType::Comment {
+                        break;
+                    }
                     tokens.push(token_match::TokenMatch::from_match(
                         line.to_string(),
                         token_type,
